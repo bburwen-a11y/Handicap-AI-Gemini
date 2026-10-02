@@ -1,786 +1,135 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horse Handicap v8.20 · October 2, 2026 — Quirin-Supported Bet Pick</title>
-
+<title>Horse Handicap v8.21</title>
 <style>
-:root{
-  --board-950:#0F2A20;
-  --board-900:#15332A;
-  --board-800:#1B3A2C;
-  --paper:#F1E9D6;
-  --paper-dim:#E4D9BE;
-  --paper-line:#CFC2A0;
-  --amber:#D9A73B;
-  --amber-dim:#8A6A26;
-  --red:#8B2A2A;
-  --green:#2E6E45;
-  --blue:#315A7D;
-  --ink:#1E1B14;
-  --ink-soft:#4A4433;
-  --mono:ui-monospace,"SF Mono","Roboto Mono","Courier New",monospace;
-  --sans:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#fff;
-  color:var(--ink);
-  font-family:var(--sans);
-  -webkit-font-smoothing:antialiased;
-}
-
-.wrap{
-  max-width:1400px;
-  margin:0 auto;
-}
-
-header{
-  background:linear-gradient(180deg,var(--board-900),var(--board-950));
-  padding:30px 20px 25px;
-  border-bottom:3px solid var(--amber-dim);
-}
-
-.eyebrow{
-  font-family:var(--mono);
-  color:var(--amber);
-  font-size:12px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  margin:0 0 8px;
-}
-
-h1{
-  margin:0;
-  color:var(--paper);
-  font-weight:800;
-  font-size:clamp(26px,5vw,40px);
-}
-
-.tagline{
-  color:#B9C9BE;
-  font-size:14px;
-  max-width:75ch;
-  margin:10px 0 0;
-  line-height:1.5;
-}
-
-main{
-  background:var(--paper);
-  padding:22px 16px 60px;
-}
-
-section{
-  margin-bottom:30px;
-}
-
-h2{
-  font-size:13px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-soft);
-  margin:0 0 14px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-h2::after{
-  content:"";
-  flex:1;
-  height:1px;
-  background:var(--paper-line);
-}
-
-.step-num{
-  font-family:var(--mono);
-  background:var(--board-950);
-  color:var(--amber);
-  font-size:11px;
-  padding:3px 7px;
-  border-radius:2px;
-}
-
-/* UPLOAD */
-
-.upload-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
-  gap:15px;
-}
-
-.upload-card{
-  border:1.5px dashed var(--paper-line);
-  border-radius:5px;
-  padding:17px;
-  background:var(--paper-dim);
-}
-
-.upload-card h3{
-  margin:0 0 6px;
-  font-size:15px;
-}
-
-.upload-card p{
-  margin:0 0 12px;
-  font-size:12px;
-  color:var(--ink-soft);
-  line-height:1.5;
-}
-
-.file-btn{
-  display:inline-flex;
-  align-items:center;
-  background:var(--board-950);
-  color:var(--paper);
-  border:none;
-  padding:9px 14px;
-  border-radius:4px;
-  font-size:12.5px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.file-btn:hover{
-  background:var(--board-800);
-}
-
-input[type=file]{
-  display:block;
-  width:100%;
-  margin-top:10px;
-  padding:8px;
-  border:1px solid var(--paper-line);
-  border-radius:4px;
-  background:#fff;
-  font-size:12px;
-}
-
-.status{
-  font-family:var(--mono);
-  font-size:11.5px;
-  margin-top:8px;
-  min-height:16px;
-  white-space:pre-wrap;
-}
-
-.status.ok{
-  color:var(--green);
-  font-weight:700;
-}
-
-.status.err{
-  color:var(--red);
-  font-weight:700;
-}
-
-.file-meta-box{
-  margin-top:9px;
-  padding:8px 10px;
-  background:#fff;
-  border:1px solid var(--paper-line);
-  border-radius:3px;
-  font-family:var(--mono);
-  font-size:11px;
-  display:none;
-  line-height:1.6;
-}
-
-.file-meta-box.show{
-  display:block;
-}
-
-/* BUTTONS */
-
-.table-actions{
-  display:flex;
-  gap:9px;
-  margin-top:11px;
-  flex-wrap:wrap;
-}
-
-.primary-btn,
-.ghost-btn,
-.small-btn{
-  border-radius:4px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-.primary-btn{
-  background:var(--amber);
-  color:var(--ink);
-  border:none;
-  padding:11px 21px;
-  font-size:13px;
-}
-
-.ghost-btn{
-  background:none;
-  border:1px solid var(--ink-soft);
-  color:var(--ink-soft);
-  padding:10px 15px;
-  font-size:12.5px;
-}
-
-.small-btn{
-  background:transparent;
-  border:1px solid var(--board-950);
-  color:var(--board-950);
-  padding:5px 9px;
-  font-size:11px;
-}
-
-/* TABLE */
-
-.table-wrap{
-  overflow-x:auto;
-  border:1px solid var(--paper-line);
-  border-radius:4px;
-  background:#fff;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-  min-width:1100px;
-}
-
-thead th{
-  text-align:left;
-  font-family:var(--mono);
-  font-size:10px;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  color:var(--paper);
-  background:var(--board-900);
-  padding:9px;
-  white-space:nowrap;
-}
-
-tbody td{
-  padding:5px 6px;
-  border-bottom:1px solid var(--paper-line);
-  vertical-align:middle;
-}
-
-tbody tr:nth-child(even){
-  background:rgba(0,0,0,.018);
-}
-
-tbody input{
-  border:1px solid transparent;
-  background:transparent;
-  padding:4px 5px;
-  font-size:12px;
-  width:100%;
-}
-
-tbody input:hover,
-tbody input:focus{
-  border-color:var(--paper-line);
-  background:#fff;
-}
-
-.scratched-row{
-  opacity:.45;
-}
-
-.scratched-row input{
-  text-decoration:line-through;
-}
-
-.del-btn{
-  background:none;
-  border:none;
-  color:var(--red);
-  cursor:pointer;
-  font-size:15px;
-}
-
-/* TABS */
-
-.tabbar{
-  display:flex;
-  gap:0;
-  margin:0 0 18px;
-  border-bottom:2px solid var(--paper-line);
-  overflow-x:auto;
-}
-
-.tabbar button{
-  appearance:none;
-  background:none;
-  border:none;
-  cursor:pointer;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  padding:10px 13px;
-  color:var(--ink-soft);
-  border-bottom:3px solid transparent;
-  margin-bottom:-2px;
-  white-space:nowrap;
-}
-
-.tabbar button.on{
-  color:var(--board-950);
-  border-bottom-color:var(--board-950);
-  font-weight:800;
-}
-
-/* BEST BETS */
-
-.bestof{
-  border:2px solid var(--board-950);
-  border-radius:5px;
-  padding:17px;
-  background:var(--paper);
-}
-
-.bestof h3{
-  margin:0 0 4px;
-  font-size:18px;
-}
-
-.best-pick{
-  border:1px solid var(--paper-line);
-  border-left:6px solid var(--amber);
-  border-radius:4px;
-  background:#fff;
-  padding:14px;
-  margin:11px 0;
-}
-
-.best-header{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.best-race{
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--board-950);
-  font-weight:800;
-}
-
-.best-horse{
-  font-size:16px;
-  font-weight:800;
-  margin-top:3px;
-}
-
-.model-prob{
-  font-family:var(--mono);
-  font-size:20px;
-  font-weight:800;
-  color:var(--board-950);
-}
-
-.prob-button{
-  appearance:none;
-  border:0;
-  border-bottom:1px dotted currentColor;
-  background:transparent;
-  padding:0;
-  font:inherit;
-  color:inherit;
-  cursor:pointer;
-}
-
-#probOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  background:rgba(15,42,32,.76);
-  padding:16px;
-  overflow-y:auto;
-}
-
-#probOverlay.show{display:block}
-
-.prob-card{
-  position:relative;
-  max-width:520px;
-  margin:8vh auto 0;
-  padding:20px;
-  border:2px solid var(--amber-dim);
-  border-radius:6px;
-  background:var(--paper);
-  box-shadow:0 18px 60px rgba(0,0,0,.35);
-}
-
-.confidence{
-  font-family:var(--mono);
-  font-size:11px;
-  font-weight:800;
-}
-
-.conf-strong{
-  color:var(--green);
-}
-
-.conf-solid{
-  color:var(--blue);
-}
-
-.conf-lean{
-  color:#8A6A26;
-}
-
-.conf-caution{
-  color:var(--red);
-}
-
-.metric-line{
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--ink-soft);
-  line-height:1.65;
-  margin-top:5px;
-}
-
-.reason-box{
-  margin-top:8px;
-  padding:9px;
-  background:var(--paper-dim);
-  border-radius:3px;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.warning-box{
-  margin-top:9px;
-  padding:8px 9px;
-  background:#fff4d0;
-  border:1px solid #d8bd68;
-  border-radius:3px;
-  font-size:11.5px;
-  line-height:1.45;
-}
-
-.badge{
-  display:inline-block;
-  background:var(--board-950);
-  color:var(--amber);
-  font-family:var(--mono);
-  font-size:10px;
-  padding:2px 5px;
-  border-radius:3px;
-  font-weight:800;
-  margin-left:4px;
-}
-
-.badge-red{
-  background:var(--red);
-  color:#fff;
-}
-
-.badge-green{
-  background:var(--green);
-  color:#fff;
-}
-
-.badge-blue{
-  background:var(--blue);
-  color:#fff;
-}
-
-/* CARDS */
-
-.race-card,
-.analysis-card,
-.h2h-card{
-  border:1px solid var(--paper-line);
-  background:#fff;
-  border-radius:4px;
-  padding:15px;
-  margin-bottom:15px;
-}
-
-.race-card h3,
-.analysis-card h3,
-.h2h-card h3{
-  margin:0 0 10px;
-  font-size:16px;
-}
-
-.compact-table{
-  width:100%;
-  min-width:900px;
-  font-size:11.5px;
-}
-
-.compact-table th{
-  padding:6px;
-}
-
-.compact-table td{
-  padding:6px;
-}
-
-/* ANALYSIS */
-
-.analysis-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-@media(max-width:700px){
-  .analysis-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-.analysis-box{
-  border:1px solid var(--paper-line);
-  border-radius:4px;
-  padding:12px;
-  background:var(--paper-dim);
-}
-
-.analysis-box.contender{
-  border-left:5px solid var(--green);
-}
-
-.analysis-box.questionable{
-  border-left:5px solid #b7791f;
-}
-
-.analysis-box.pretender{
-  border-left:5px solid var(--red);
-}
-
-.field-view-toggle{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.field-view-toggle button{border:1px solid var(--paper-line);background:#fff;padding:8px 12px;border-radius:4px;font:700 11px var(--mono);cursor:pointer}.field-view-toggle button.on{background:var(--board-950);color:#fff}.trainer-multi{display:inline-block;margin-left:5px;padding:2px 5px;border-radius:3px;background:#fff3cd;color:#6b4f00;font:800 9px var(--mono)}
-
-.analysis-box h4{
-  margin:0 0 8px;
-  font-family:var(--mono);
-  font-size:11px;
-  text-transform:uppercase;
-}
-
-.analysis-item{
-  padding:7px 0;
-  border-bottom:1px dotted var(--paper-line);
-  font-size:12px;
-  line-height:1.4;
-}
-
-/* MODAL */
-
-#ppOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(15,42,32,.7);
-  z-index:1000;
-  overflow-y:auto;
-  padding:12px;
-}
-
-#ppOverlay.show{
-  display:block;
-}
-
-.pp-card{
-  max-width:1050px;
-  margin:15px auto;
-  background:var(--paper);
-  border-radius:5px;
-  border:1px solid var(--paper-line);
-  padding:18px;
-  position:relative;
-}
-
-.pp-close{
-  position:sticky;
-  top:4px;
-  float:right;
-  right:4px;
-  z-index:1002;
-  background:none;
-  border:none;
-  font-size:22px;
-  cursor:pointer;
-}
-
-.pp-table{
-  width:100%;
-  min-width:750px;
-  border-collapse:collapse;
-  font-family:var(--mono);
-  font-size:10.5px;
-}
-
-.pp-table th{
-  background:var(--board-900);
-  color:var(--paper);
-  padding:6px;
-}
-
-.pp-table td{
-  padding:5px;
-  border-bottom:1px solid var(--paper-line);
-}
-
-.work-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:8px;
-}
-
-.work-item{
-  background:#fff;
-  border:1px solid var(--paper-line);
-  padding:8px;
-  border-radius:3px;
-  font-family:var(--mono);
-  font-size:10.5px;
-}
-  .race-jump-bar{
-    position:sticky; top:0; z-index:80;
-    display:flex; align-items:center; gap:6px;
-    overflow-x:auto; -webkit-overflow-scrolling:touch;
-    padding:8px; margin:0 0 12px;
-    background:rgba(247,241,222,.97);
-    border:1px solid var(--paper-line); border-radius:6px;
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
-  }
-  .race-jump-label{flex:0 0 auto;font-weight:800;font-size:11px;color:var(--ink-soft);margin-right:2px;}
-  .race-jump-btn{flex:0 0 auto;min-width:34px;height:34px;padding:0 9px;border:1px solid #6b7280;border-radius:8px;background:#fff;color:var(--ink);font-weight:800;font-size:13px;cursor:pointer;}
-  .race-anchor-target{scroll-margin-top:118px;}
-
-  .best-pick.read-green{border:3px solid #1f6b3a;background:#f0f9f2;}
-  .best-pick.read-yellow{border:3px solid #b98222;background:#fff9e8;}
-  .readability-banner{margin:8px 0 10px;padding:9px 11px;border-radius:10px;font-family:var(--mono);font-size:11px;font-weight:800;}
-  .readability-banner.read-green{background:#1f6b3a;color:#fff;}
-  .readability-banner.read-yellow{background:#b98222;color:#fff;}
-
-html,body{max-width:100%;overflow-x:hidden}
-button,input,select,textarea{font-size:16px;max-width:100%}
-.file-btn,.btn{min-height:44px}
-@media(max-width:700px){
-  .container,.page,.section,.card,.analysis-card{max-width:100%;width:100%;box-sizing:border-box}
-  .analysis-grid,.h2h-select-grid,.h2h-comparison-grid{grid-template-columns:minmax(0,1fr)!important}
-  .analysis-box,.analysis-item,.note,.warning-box{min-width:0;overflow-wrap:anywhere}
-  .table-wrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .pp-card{width:100%;max-width:100%;margin:0;padding:10px;box-sizing:border-box}
-  .pp-table{min-width:680px}
-  .pp-close{top:2px;right:2px}
-  .race-jump-bar{position:sticky!important;top:0!important;z-index:80!important}
-  .tabbar{position:relative!important;top:auto!important}
-}
-
-.decision-also{
-  margin-top:10px;
-  padding:9px 11px;
-  border-left:3px solid #C08A2E;
-  background:rgba(217,167,59,.08);
-  font-size:12px;
-  line-height:1.55;
-}
-.decision-also b{color:var(--ink);}
-
-.horse-name-link{
-  appearance:none;-webkit-appearance:none;border:0;background:none;padding:0;margin:0;
-  font:inherit;font-weight:800;color:inherit;text-decoration:underline;
-  text-decoration-thickness:1px;text-underline-offset:2px;cursor:pointer;
-}
-.horse-name-link:active{opacity:.6}
-
-details.rf806{margin:10px 0 12px;border:1px solid var(--paper-line);border-radius:8px;background:#fff;overflow:hidden}
-details.rf806>summary{cursor:pointer;padding:10px 12px;font:900 11px var(--mono);letter-spacing:.05em;background:var(--paper-dim);position:relative;z-index:1}
-.rf806-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 0 4px}
-table.rf806-table{border-collapse:collapse;min-width:1050px;width:max-content;font-size:11px;white-space:nowrap}
-table.rf806-table th{position:sticky;top:0;background:var(--board-900);color:#fff;padding:6px 7px;font:800 9px var(--mono);text-transform:uppercase;letter-spacing:.04em;z-index:2}
-table.rf806-table td{padding:6px 7px;border-bottom:1px solid var(--paper-line);vertical-align:top}
-table.rf806-table tbody tr:nth-child(even){background:rgba(0,0,0,.025)}
+:root {
+  --board-950: #0F2A20;
+  --board-900: #15332A;
+  --board-800: #1B3A2C;
+  --paper: #F1E9D6;
+  --paper-dim: #E4D9BE;
+  --paper-line: #CFC2A0;
+  --amber: #D9A73B;
+  --amber-dim: #8A6A26;
+  --red: #8B2A2A;
+  --green: #2E6E45;
+  --blue: #315A7D;
+  --ink: #1E1B14;
+  --ink-soft: #4A4433;
+  --mono: ui-monospace, "SF Mono", "Roboto Mono", "Courier New", monospace;
+  --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1400px; margin: 0 auto; }
+header { background: linear-gradient(180deg, var(--board-900), var(--board-950)); padding: 25px 20px 20px; border-bottom: 3px solid var(--amber-dim); }
+.eyebrow { font-family: var(--mono); color: var(--amber); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 6px; }
+h1 { margin: 0; color: var(--paper); font-weight: 800; font-size: clamp(22px, 5vw, 36px); }
+.tagline { color: #B9C9BE; font-size: 13px; max-width: 75ch; margin: 8px 0 0; line-height: 1.4; }
+main { background: var(--paper); padding: 20px 16px 60px; }
+section { margin-bottom: 28px; }
+h2 { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+h2::after { content: ""; flex: 1; height: 1px; background: var(--paper-line); }
+.step-num { font-family: var(--mono); background: var(--board-950); color: var(--amber); font-size: 11px; padding: 2px 6px; border-radius: 2px; }
+.upload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.upload-card { border: 1.5px dashed var(--paper-line); border-radius: 6px; padding: 15px; background: var(--paper-dim); }
+.upload-card h3 { margin: 0 0 6px; font-size: 14px; }
+.upload-card p { margin: 0 0 10px; font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+.file-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--board-950); color: var(--paper); border: none; padding: 10px 16px; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; min-height: 44px; width: 100%; }
+input[type=file] { display: block; width: 100%; margin-top: 8px; padding: 8px; border: 1px solid var(--paper-line); border-radius: 4px; background: #fff; font-size: 12px; }
+.status { font-family: var(--mono); font-size: 11px; margin-top: 8px; min-height: 16px; }
+.status.ok { color: var(--green); font-weight: 700; }
+.table-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.primary-btn, .ghost-btn { border-radius: 4px; cursor: pointer; font-weight: 700; min-height: 44px; }
+.primary-btn { background: var(--amber); color: var(--ink); border: none; padding: 12px 20px; font-size: 14px; flex: 1; }
+.ghost-btn { background: #fff; border: 1px solid var(--paper-line); color: var(--ink); padding: 10px 14px; font-size: 12px; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--paper-line); border-radius: 4px; background: #fff; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
+thead th { text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--paper); background: var(--board-900); padding: 10px 8px; position: sticky; top: 0; z-index: 2; }
+tbody td { padding: 6px; border-bottom: 1px solid var(--paper-line); vertical-align: middle; }
+tbody input { border: 1px solid transparent; background: transparent; padding: 4px 6px; font-size: 14px; width: 100%; }
+tbody input:hover, tbody input:focus { border-color: var(--paper-line); background: #fff; }
+.scratched-row { opacity: .45; background: #f0f0f0; }
+.scratched-row input { text-decoration: line-through; }
+.del-btn { background: none; border: none; color: var(--red); cursor: pointer; font-size: 16px; padding: 4px 8px; }
+.tabbar { display: flex; gap: 2px; margin: 0 0 16px; border-bottom: 2px solid var(--paper-line); overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--paper); }
+.tabbar button { appearance: none; background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding: 12px 16px; color: var(--ink-soft); border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; font-weight: 700; }
+.tabbar button.on { color: var(--board-950); border-bottom-color: var(--board-950); font-weight: 800; background: #fff; }
+.bestof { border: 2px solid var(--board-950); border-radius: 6px; padding: 16px; background: var(--paper); }
+.bestof h3 { margin: 0 0 10px; font-size: 18px; }
+.best-pick { border: 1px solid var(--paper-line); border-left: 6px solid var(--amber); border-radius: 4px; background: #fff; padding: 14px; margin-bottom: 12px; }
+.best-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.best-race { font-family: var(--mono); font-size: 11px; color: var(--board-950); font-weight: 800; }
+.best-horse { font-size: 17px; font-weight: 800; margin-top: 2px; }
+.model-prob { font-family: var(--mono); font-size: 18px; font-weight: 800; color: var(--board-950); background: var(--paper-dim); padding: 4px 8px; border-radius: 4px; }
+.metric-line { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+.race-card, .analysis-card { border: 1px solid var(--paper-line); background: #fff; border-radius: 6px; padding: 15px; margin-bottom: 16px; }
+.race-card h3, .analysis-card h3 { margin: 0 0 12px; font-size: 16px; }
+.compact-table { width: 100%; min-width: 750px; font-size: 12px; }
+.analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.analysis-box { border: 1px solid var(--paper-line); border-radius: 4px; padding: 12px; background: var(--paper-dim); }
+.analysis-box.contender { border-left: 5px solid var(--green); }
+.analysis-box.top { border-left: 5px solid var(--amber); }
+.analysis-box h4 { margin: 0 0 6px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
+.analysis-item { font-size: 12px; line-height: 1.4; color: var(--ink); }
+.race-jump-bar { position: sticky; top: 0; z-index: 80; display: flex; align-items: center; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 8px; margin: 0 0 14px; background: rgba(241, 233, 214, 0.98); border: 1px solid var(--paper-line); border-radius: 6px; }
+.race-jump-btn { flex: 0 0 auto; min-width: 40px; height: 38px; padding: 0 10px; border: 1px solid var(--board-950); border-radius: 4px; background: #fff; color: var(--ink); font-weight: 800; font-size: 12px; cursor: pointer; }
+.badge { display: inline-block; background: var(--board-950); color: var(--amber); font-family: var(--mono); font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: 800; margin-left: 4px; }
 </style>
 </head>
-
 <body>
-
 <div class="wrap">
-
 <header>
-<p class="eyebrow">Professional Handicapping & Value Engine</p>
-<h1>Horse Handicap <span style="font-family:var(--mono);font-size:.34em;vertical-align:middle;opacity:.8;">v8.20 · Oct 2, 2026</span></h1>
-<p class="tagline">
-BRIS Single File parser + field-relative win-ranking engine using Prime Power, BRIS speed/pace, class, recent form, trainer/jockey, run style, workouts.
-</p>
+  <p class="eyebrow">Professional Handicapping & Value Engine</p>
+  <h1>Horse Handicap <span style="font-family:var(--mono);font-size:.35em;vertical-align:middle;opacity:.8;">v8.21</span></h1>
+  <p class="tagline">BRIS Parser & Field-Relative Win-Ranking Engine.</p>
+  <div style="margin-top:14px;">
+    <button class="file-btn" id="loadDemoBtn" style="background:var(--amber);color:var(--ink);">⚡ Load Built-in Demo Card</button>
+  </div>
 </header>
 
 <main>
-
 <section>
-<h2><span class="step-num">1</span> Load Race Data & Scratches / Rider Changes</h2>
-
-<div class="upload-grid">
-  <div class="upload-card">
-    <h3>Brisnet .DRF Single File</h3>
-    <p>Reads the Brisnet single-file layout and handles DRF/CSV/TXT content, ZIP files, BOM, and common delimiters.</p>
-    <label class="file-btn" for="drfInput">Select Brisnet file</label>
-    <input type="file" id="drfInput" accept=".drf,.csv,.txt,.zip,text/csv,text/plain,application/zip">
-    
-    <div id="drfStatus" class="status"></div>
-    <div class="file-meta-box" id="drfMetaBox">
-      <div><strong>File:</strong> <span id="drfFileName">-</span></div>
-      <div><strong>Bytes:</strong> <span id="drfBytes">-</span></div>
-      <div><strong>Records:</strong> <span id="drfRecords">-</span></div>
-      <div><strong>Parsed:</strong> <span id="drfRunners">-</span> runners / <span id="drfRaces">-</span> races</div>
+  <h2><span class="step-num">1</span> Race Entries & Data</h2>
+  <div class="upload-grid">
+    <div class="upload-card">
+      <h3>Import Brisnet DRF File</h3>
+      <p>Select a file from your device or use demo mode.</p>
+      <input type="file" id="drfInput" accept=".drf,.csv,.txt">
+      <div id="drfStatus" class="status"></div>
     </div>
   </div>
-
-  <div class="upload-card">
-    <h3>Equibase RSS / XML Feed</h3>
-    <p>Upload the XML/RSS file or paste its XML contents. Automatically applies scratches, rider updates, and transitions to the Decision Board.</p>
-    <label class="file-btn" for="rssInput">Select XML / RSS</label>
-    <input type="file" id="rssInput">
-    
-    <textarea id="rssPaste" rows="3" style="width:100%;margin-top:9px;font-family:var(--mono);font-size:11px;padding:7px;" placeholder="Or paste XML/RSS contents here..."></textarea>
-    
-    <div style="margin-top:8px;">
-      <button class="small-btn" id="applyRssBtn">Apply Feed Updates</button>
-    </div>
-    
-    <div class="file-meta-box" id="rssMetaBox">
-      <div><strong>Loaded:</strong> <span id="rssFileName">-</span></div>
-      <div><strong>Feed Items:</strong> <span id="rssItemCount">-</span></div>
-    </div>
-    <div id="rssStatus" class="status"></div>
-  </div>
-</div>
 </section>
 
 <section>
-<h2><span class="step-num">2</span> Field Entries</h2>
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>Race</th><th>Post</th><th>Horse</th><th>Trainer</th><th>Jockey</th><th>M/L</th><th>Prime Power</th><th>Last Speed</th><th>Scr</th><th></th>
-      </tr>
-    </thead>
-    <tbody id="rowsBody"></tbody>
-  </table>
-</div>
-<div class="table-actions">
-  <button class="ghost-btn" id="addRowBtn">+ Add Runner</button>
-  <button class="ghost-btn" id="clearBtn">Clear All</button>
-  <button class="primary-btn" id="computeBtn">Compute Race Card →</button>
-</div>
+  <h2><span class="step-num">2</span> Field Entries Management</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Race</th>
+          <th>Post</th>
+          <th>Horse Name</th>
+          <th>Trainer</th>
+          <th>Jockey</th>
+          <th>M/L</th>
+          <th>Prime Power</th>
+          <th>Speed</th>
+          <th>Scr</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rowsBody"></tbody>
+    </table>
+  </div>
+  <div class="table-actions">
+    <button class="ghost-btn" id="addRowBtn">+ Add Runner</button>
+    <button class="ghost-btn" id="clearBtn">Clear All</button>
+    <button class="primary-btn" id="computeBtn">Compute Race Card →</button>
+  </div>
 </section>
 
 <div class="tabbar" id="tabbar">
@@ -790,426 +139,322 @@ BRIS Single File parser + field-relative win-ranking engine using Prime Power, B
   <button data-tab="facts">RACE FACTS</button>
 </div>
 
-<section id="bestSection" style="display:none;"></section>
+<section id="bestSection"></section>
 <section id="cardSection" style="display:none;"></section>
 <section id="analysisSection" style="display:none;"></section>
 <section id="factsSection" style="display:none;"></section>
-
 </main>
-</div>
-
-<!-- OVERLAYS -->
-<div id="ppOverlay">
-  <div class="pp-card">
-    <button class="pp-close" id="ppCloseBtn">✕</button>
-    <div id="ppContent"></div>
-  </div>
-</div>
-
-<div id="probOverlay" role="dialog" aria-modal="true">
-  <div class="prob-card">
-    <button class="pp-close" id="probCloseBtn">✕</button>
-    <div id="probContent"></div>
-  </div>
 </div>
 
 <script>
 "use strict";
-
 let rows = [];
 let rowId = 1;
 let computedRaces = {};
 
 const $ = id => document.getElementById(id);
-function safe(v){ return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
-function number(v){ const n = parseFloat(String(v).replace(/[^0-9.+-]/g,"")); return Number.isFinite(n) ? n : 0; }
-function normalizeName(v){ return String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]/g,""); }
-function formatDate(s){ s = String(s||""); return /^\d{8}$/.test(s) ? s.substring(4,6)+"/"+s.substring(6,8)+"/"+s.substring(0,4) : s; }
-function formatDistance(v){ let y = number(v); if(!y) return v||"N/A"; if(y>2500) y=y/3; const f = y/220; if(f<8) return (Math.round(f*2)/2)+"f"; const m = y/1760; if(Math.abs(m-1)<.03) return "1m"; if(Math.abs(m-1.0625)<.03) return "1 1/16m"; return m.toFixed(2)+"m"; }
-function getField(f,n){ return f[n-1] === undefined ? "" : String(f[n-1]).trim().replace(/^["']|["']$/g,""); }
-function getNumber(f,n){ return number(getField(f,n)); }
 
-function newRow(partial = {}){
-    return Object.assign({
-        id: rowId++, race:"1", post:"1", horse:"", trainer:"", jockey:"", odds:"", primePower:0, lastSpeed:0, bestSpeedLife:0, starts:0, wins:0, careerEarnings:0, speedPoints:0, runStyle:"", daysSinceLast:0, tjROI:0, scratched:false, jockeyChanged:false, ppRaces:[], ppWorks:[]
-    }, partial);
+function safe(v) {
+  return String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function renderRows(){
-    const body = $("rowsBody");
-    body.innerHTML = "";
-    rows.forEach(r => {
-        const tr = document.createElement("tr");
-        if(r.scratched) tr.classList.add("scratched-row");
-        tr.innerHTML = `
-        <td><input value="${safe(r.race)}" data-field="race"></td>
-        <td><input value="${safe(r.post)}" data-field="post"></td>
-        <td><input value="${safe(r.horse)}" data-field="horse"></td>
-        <td><input value="${safe(r.trainer)}" data-field="trainer"></td>
-        <td><input value="${safe(r.jockey)}" data-field="jockey"> ${r.jockeyChanged ? '<span class="badge badge-red">CHANGED</span>' : ''}</td>
-        <td><input value="${safe(r.odds)}" data-field="odds"></td>
-        <td><input value="${safe(r.primePower)}" data-field="primePower" style="font-weight:700;"></td>
-        <td><input value="${safe(r.lastSpeed)}" data-field="lastSpeed"></td>
-        <td style="text-align:center;"><input type="checkbox" ${r.scratched ? "checked" : ""} data-field="scratched"></td>
-        <td><button class="del-btn" data-delete="${r.id}">✕</button></td>
-        `;
-        tr.querySelectorAll("[data-field]").forEach(input => {
-            input.addEventListener("input", function(){
-                const field = this.dataset.field;
-                if(field === "scratched"){ r.scratched = this.checked; tr.classList.toggle("scratched-row", r.scratched); }
-                else { r[field] = this.value; }
-            });
-        });
-        tr.querySelector("[data-delete]").addEventListener("click", () => { rows = rows.filter(x=>x.id !== r.id); renderRows(); });
-        body.appendChild(tr);
-    });
+function number(v) {
+  const n = parseFloat(String(v).replace(/[^0-9.+-]/g, ""));
+  return Number.isFinite(n) ? n : 0;
 }
 
-$("addRowBtn").addEventListener("click", () => { rows.push(newRow()); renderRows(); });
-$("clearBtn").addEventListener("click", () => {
-    rows = []; computedRaces = {}; renderRows();
-    $("drfInput").value = ""; $("rssInput").value = ""; $("rssPaste").value = "";
-    ["best", "card", "analysis", "facts"].forEach(id => { const el=$(id+"Section"); if(el) el.innerHTML=""; });
-});
+function newRow(partial = {}) {
+  return Object.assign({
+    id: rowId++,
+    race: "1",
+    post: "1",
+    horse: "",
+    trainer: "",
+    jockey: "",
+    odds: "5-2",
+    primePower: 132.0,
+    lastSpeed: 90,
+    scratched: false
+  }, partial);
+}
 
-/* ZIP / CSV / DRF LOADERS */
-function decodeBytes(bytes){ try{ return new TextDecoder("utf-8",{fatal:true}).decode(bytes); } catch(e){ return new TextDecoder("windows-1252").decode(bytes); } }
-async function inflateRaw(bytes){ const ds = new DecompressionStream("deflate-raw"); const stream = new Blob([bytes]).stream().pipeThrough(ds); return new Uint8Array(await new Response(stream).arrayBuffer()); }
+function loadDemoData() {
+  rows = [
+    newRow({ race: "1", post: "1", horse: "Shadow Dancer", trainer: "T. Pletcher", jockey: "I. Ortiz Jr.", odds: "9-5", primePower: 138.4, lastSpeed: 97 }),
+    newRow({ race: "1", post: "2", horse: "Midnight Runner", trainer: "C. Brown", jockey: "F. Prat", odds: "5-2", primePower: 135.1, lastSpeed: 95 }),
+    newRow({ race: "1", post: "3", horse: "Storm Surge", trainer: "W. Mott", jockey: "J. Rosario", odds: "4-1", primePower: 129.8, lastSpeed: 88 }),
+    newRow({ race: "2", post: "1", horse: "Golden Oasis", trainer: "B. Baffert", jockey: "J. Velazquez", odds: "6-5", primePower: 142.1, lastSpeed: 101 }),
+    newRow({ race: "2", post: "2", horse: "Silver Bullet", trainer: "M. Maker", jockey: "U. Rispoli", odds: "3-1", primePower: 134.6, lastSpeed: 94 }),
+    newRow({ race: "2", post: "3", horse: "Ironclad", trainer: "S. Asmussen", jockey: "T. Gaffalione", odds: "8-1", primePower: 126.3, lastSpeed: 85 })
+  ];
+  renderRows();
+  computeRaceCard();
+  $("drfStatus").className = "status ok";
+  $("drfStatus").textContent = "✓ Loaded Demo Card (2 Races, 6 Runners)";
+}
 
-async function readTextFile(file){
-    const bytes = await new Promise((resolve,reject)=>{
-        const reader = new FileReader();
-        reader.onload=()=>resolve(new Uint8Array(reader.result));
-        reader.onerror=()=>reject(reader.error || new Error("Read failed."));
-        reader.readAsArrayBuffer(file);
-    });
-    if(bytes[0]===0x50 && bytes[1]===0x4b && bytes[2]===0x03 && bytes[3]===0x04){
-        // Basic zip extraction
-        const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-        let eocd=-1; for(let i=bytes.length-22;i>=0;i--){ if(dv.getUint32(i,true)===0x06054b50){ eocd=i; break; } }
-        if(eocd<0) throw new Error("ZIP directory not found.");
-        const centralOffset=dv.getUint32(eocd+16,true);
-        let cursor=centralOffset;
-        let preferred = null;
-        while(cursor+46<=bytes.length && dv.getUint32(cursor,true)===0x02014b50){
-            const method=dv.getUint16(cursor+10,true), compSize=dv.getUint32(cursor+20,true), nameLen=dv.getUint16(cursor+28,true), extraLen=dv.getUint16(cursor+30,true), comLen=dv.getUint16(cursor+32,true), locOff=dv.getUint32(cursor+42,true);
-            const name = new TextDecoder("utf-8").decode(bytes.slice(cursor+46,cursor+46+nameLen));
-            if(!name.endsWith("/")) preferred = {name, method, compSize, locOff};
-            cursor += 46+nameLen+extraLen+comLen;
+function renderRows() {
+  const body = $("rowsBody");
+  body.innerHTML = "";
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    if (r.scratched) tr.classList.add("scratched-row");
+    tr.innerHTML = `
+      <td><input value="${safe(r.race)}" data-field="race"></td>
+      <td><input value="${safe(r.post)}" data-field="post"></td>
+      <td><input value="${safe(r.horse)}" data-field="horse"></td>
+      <td><input value="${safe(r.trainer)}" data-field="trainer"></td>
+      <td><input value="${safe(r.jockey)}" data-field="jockey"></td>
+      <td><input value="${safe(r.odds)}" data-field="odds"></td>
+      <td><input value="${safe(r.primePower)}" data-field="primePower"></td>
+      <td><input value="${safe(r.lastSpeed)}" data-field="lastSpeed"></td>
+      <td style="text-align:center;"><input type="checkbox" ${r.scratched ? "checked" : ""} data-field="scratched"></td>
+      <td><button class="del-btn" data-delete="${r.id}">✕</button></td>
+    `;
+    
+    tr.querySelectorAll("[data-field]").forEach(input => {
+      input.addEventListener("input", function() {
+        const field = this.dataset.field;
+        if (field === "scratched") {
+          r.scratched = this.checked;
+          tr.classList.toggle("scratched-row", r.scratched);
+        } else {
+          r[field] = this.value;
         }
-        if(!preferred) throw new Error("No readable files in ZIP.");
-        const localNameLen=dv.getUint16(preferred.locOff+26,true), localExtraLen=dv.getUint16(preferred.locOff+28,true);
-        const dataStart=preferred.locOff+30+localNameLen+localExtraLen, compressed=bytes.slice(dataStart, dataStart+preferred.compSize);
-        if(preferred.method === 0) return {name: preferred.name, text: decodeBytes(compressed)};
-        if(preferred.method === 8) return {name: preferred.name, text: decodeBytes(await inflateRaw(compressed))};
-        throw new Error("ZIP compression method unsupported.");
-    }
-    return {name: file.name, text: decodeBytes(bytes).replace(/^\uFEFF/,"")};
-}
-
-function parseCSVRecords(text){
-    const records = []; let row = [], field = "", quoted = false;
-    for(let i=0;i<text.length;i++){
-        const ch = text[i];
-        if(quoted){
-            if(ch === '"' && text[i+1] === '"'){ field += '"'; i++; }
-            else if(ch === '"') quoted = false;
-            else field += ch;
-            continue;
-        }
-        if(ch === '"') quoted = true;
-        else if(ch === ",") { row.push(field.trim()); field = ""; }
-        else if(ch === "\n" || ch === "\r") {
-            if(ch === "\r" && text[i+1] === "\n") i++;
-            row.push(field.trim()); field = "";
-            if(row.some(x=>String(x).trim()!=="")) records.push(row);
-            row = [];
-        } else field += ch;
-    }
-    if(field.length || row.length) { row.push(field.trim()); records.push(row); }
-    return records;
-}
-
-$("drfInput").addEventListener("change", async e => {
-    const file = e.target.files[0]; if(!file) return;
-    $("drfStatus").className = "status"; $("drfStatus").textContent = "Opening...";
-    try {
-        const {text, name} = await readTextFile(file);
-        const records = parseCSVRecords(text);
-        let newRows = [];
-        records.forEach(f => {
-            if(f.length < 251 || !getField(f,45)) return;
-            const ppRaces = [];
-            for(let i=0;i<10;i++) {
-                if(getField(f,256+i)) ppRaces.push({
-                    date: getField(f,256+i), track: getField(f,276+i), dist: getField(f,316+i), surf: getField(f,326+i), 
-                    trackCondition: getField(f,306+i), raceType: getField(f,1086+i), post: getField(f,356+i), 
-                    fin: getField(f,616+i), speed: getNumber(f,846+i), pace2: getNumber(f,766+i), pace4: getNumber(f,776+i), latePace: getNumber(f,816+i)
-                });
-            }
-            const ppWorks = [];
-            for(let i=0;i<12;i++){
-                if(getField(f,102+i) && getField(f,102+i)!=="0") ppWorks.push({
-                    date: formatDate(getField(f,102+i)), time: getField(f,114+i), track: getField(f,126+i), distance: getField(f,138+i), condition: getField(f,150+i)
-                });
-            }
-            let pp = getNumber(f,251); if(pp>500) pp=pp/10;
-            
-            newRows.push(newRow({
-                race: getField(f,3), post: getField(f,4), horse: getField(f,45), odds: getField(f,44),
-                trainer: getField(f,28), jockey: getField(f,33), primePower: pp, lastSpeed: getNumber(f,846),
-                bestSpeedLife: getNumber(f,1328), starts: getNumber(f,97), wins: getNumber(f,98), careerEarnings: getNumber(f,101),
-                runStyle: getField(f,210), speedPoints: getNumber(f,211), daysSinceLast: getNumber(f,224), tjROI: getNumber(f,223),
-                sire: getField(f,52), dam: getField(f,54), damSire: getField(f,55), ppRaces, ppWorks
-            }));
-        });
-        if(!newRows.length) throw new Error("No valid BRIS records found.");
-        rows = newRows; renderRows();
-        $("drfMetaBox").classList.add("show");
-        $("drfFileName").textContent = name;
-        $("drfRecords").textContent = records.length;
-        $("drfRunners").textContent = rows.length;
-        $("drfRaces").textContent = new Set(rows.map(r=>r.race)).size;
-        $("drfStatus").className = "status ok";
-        $("drfStatus").textContent = "✓ BRIS Single File Loaded Successfully.";
-    } catch(err) {
-        $("drfStatus").className = "status err"; $("drfStatus").textContent = err.message;
-    }
-});
-
-/* EQUIBASE RSS XML PARSER */
-function parseEquibaseXML(xmlText) {
-    const doc = new DOMParser().parseFromString(xmlText, "text/xml");
-    const items = doc.querySelectorAll("item");
-    const feed = { scratches: [], riders: [], count: 0 };
-    items.forEach(item => {
-        feed.count++;
-        const title = (item.querySelector("title")?.textContent || "").toUpperCase();
-        const desc = (item.querySelector("description")?.textContent || "");
-        const raceMatch = title.match(/RACE\s*(\d+)/i);
-        if (!raceMatch) return;
-        const race = parseInt(raceMatch[1], 10).toString();
-        
-        if (title.includes("SCRATCH")) {
-            desc.split(/,|<br\s*\/?>/i).map(s => s.trim()).filter(Boolean).forEach(h => {
-                feed.scratches.push({ race, horse: normalizeName(h) });
-            });
-        } else if (title.includes("RIDER") || title.includes("CHANGE")) {
-            desc.split(/<br\s*\/?>/i).map(s => s.replace(/<[^>]+>/g,"").trim()).forEach(c => {
-                const parts = c.split("-").map(p => p.trim());
-                if (parts.length >= 2) {
-                    let hName = parts[0], rName = parts[1];
-                    if(/^\d+$/.test(hName) && parts.length >= 3) { hName = parts[1]; rName = parts[2]; }
-                    feed.riders.push({ race, horse: normalizeName(hName), rider: rName });
-                }
-            });
-        }
+      });
     });
-    return feed;
+
+    tr.querySelector("[data-delete]").addEventListener("click", () => {
+      rows = rows.filter(x => x.id !== r.id);
+      renderRows();
+    });
+
+    body.appendChild(tr);
+  });
 }
 
-function processRSS(xmlText) {
-    try {
-        const feed = parseEquibaseXML(xmlText);
-        $("rssMetaBox").classList.add("show");
-        $("rssItemCount").textContent = feed.count;
-        if (!feed.scratches.length && !feed.riders.length) throw new Error("No relevant changes found in feed.");
-        
-        feed.scratches.forEach(sc => {
-            const match = rows.find(r => String(r.race) === sc.race && normalizeName(r.horse) === sc.horse);
-            if(match && !match.scratched) match.scratched = true;
-        });
-        feed.riders.forEach(ri => {
-            const match = rows.find(r => String(r.race) === ri.race && normalizeName(r.horse) === ri.horse);
-            if(match) { match.jockey = ri.rider; match.jockeyChanged = true; }
-        });
-        
-        $("rssStatus").className = "status ok";
-        $("rssStatus").textContent = "✓ Feed applied. Auto-computing decisions...";
-        
-        renderRows();
-        computeRaceCard();
-        switchTab("best");
-    } catch(err) {
-        $("rssStatus").className = "status err"; $("rssStatus").textContent = "RSS Error: " + err.message;
-    }
-}
-
-$("rssInput").addEventListener("change", async e => {
-    const file = e.target.files[0]; if(!file) return;
-    $("rssFileName").textContent = file.name;
-    const res = await readTextFile(file);
-    processRSS(res.text);
-});
-$("applyRssBtn").addEventListener("click", () => {
-    if($("rssPaste").value.trim()){ $("rssFileName").textContent="Pasted Text"; processRSS($("rssPaste").value); }
-});
-
-/* COMPUTATION & TABS */
 function computeRaceCard() {
-    if(!rows.length) return alert("No runners loaded.");
-    computedRaces = {};
-    const grouped = {};
-    rows.forEach(r => { if(!r.scratched) { if(!grouped[r.race]) grouped[r.race]=[]; grouped[r.race].push(r); } });
-    
-    for(const raceNum in grouped) {
-        const field = grouped[raceNum];
-        const maxPP = Math.max(...field.map(x => number(x.primePower) || 0));
-        const maxSpd = Math.max(...field.map(x => number(x.lastSpeed) || 0));
-        let totalSpeedPts = field.reduce((acc, r) => acc + number(r.speedPoints), 0);
-        
-        field.forEach(r => {
-            let score = 0;
-            if(number(r.primePower)) score += 30 + (number(r.primePower) - maxPP);
-            if(number(r.lastSpeed)) score += 20 + (number(r.lastSpeed) - maxSpd);
-            if(number(r.daysSinceLast) > 0 && number(r.daysSinceLast) <= 45) score += 5;
-            if(number(r.tjROI) > +0.50) score += 3;
-            r.modelScore = score;
-            
-            r.paceAdvantage = false;
-            if(totalSpeedPts < 15 && r.runStyle.includes("E") && number(r.speedPoints) > 4) r.paceAdvantage = true;
-            if(totalSpeedPts >= 21 && (r.runStyle === "S" || r.runStyle === "P")) r.paceAdvantage = true;
-        });
-        
-        field.sort((a,b) => b.modelScore - a.modelScore);
-        
-        field.forEach((r, idx) => {
-            if(idx === 0) r.category = "TOP PICK";
-            else if (r.modelScore >= field[0].modelScore - 12) r.category = "CONTENDER";
-            else if (r.modelScore >= field[0].modelScore - 25) r.category = "QUESTIONABLE";
-            else r.category = "PRETENDER";
-        });
-        
-        computedRaces[raceNum] = { raceNum, field, totalSpeedPts, paceForecast: totalSpeedPts >= 21 ? "Fast/Contested" : (totalSpeedPts < 15 ? "Soft/Lone Speed" : "Moderate") };
+  if (!rows.length) {
+    alert("No runners loaded. Click 'Load Built-in Demo Card' first.");
+    return;
+  }
+  computedRaces = {};
+  const grouped = {};
+
+  rows.forEach(r => {
+    if (!r.scratched) {
+      if (!grouped[r.race]) grouped[r.race] = [];
+      grouped[r.race].push(r);
     }
-    
-    renderDecisionBoard();
-    renderRaceCardView();
-    renderContendersView();
-    renderRaceFactsView();
+  });
+
+  for (const raceNum in grouped) {
+    const field = grouped[raceNum];
+    const maxPP = Math.max(...field.map(x => number(x.primePower) || 0));
+    const maxSpd = Math.max(...field.map(x => number(x.lastSpeed) || 0));
+
+    field.forEach(r => {
+      let score = 50;
+      if (number(r.primePower)) score += (number(r.primePower) - maxPP) * 2;
+      if (number(r.lastSpeed)) score += (number(r.lastSpeed) - maxSpd) * 1.5;
+      r.modelScore = Math.max(10, Math.round(score));
+    });
+
+    field.sort((a, b) => b.modelScore - a.modelScore);
+
+    field.forEach((r, idx) => {
+      if (idx === 0) r.category = "TOP PICK";
+      else if (r.modelScore >= field[0].modelScore - 15) r.category = "CONTENDER";
+      else r.category = "LONGSHOT";
+    });
+
+    computedRaces[raceNum] = { raceNum, field };
+  }
+
+  renderDecisionBoard();
+  renderRaceCardView();
+  renderContendersView();
+  renderRaceFactsView();
 }
 
 function switchTab(tabId) {
-    document.querySelectorAll(".tabbar button").forEach(b => b.classList.toggle("on", b.dataset.tab === tabId));
-    ["best", "card", "analysis", "facts"].forEach(id => { const el = $(id+"Section"); if(el) el.style.display = (id === tabId) ? "block" : "none"; });
+  document.querySelectorAll(".tabbar button").forEach(b => {
+    b.classList.toggle("on", b.dataset.tab === tabId);
+  });
+  ["best", "card", "analysis", "facts"].forEach(id => {
+    $(id + "Section").style.display = (id === tabId) ? "block" : "none";
+  });
 }
-$("tabbar").addEventListener("click", e => { if(e.target.tagName === "BUTTON") switchTab(e.target.dataset.tab); });
-$("computeBtn").addEventListener("click", () => { computeRaceCard(); switchTab("best"); });
 
-/* VIEW RENDERING */
 function renderDecisionBoard() {
-    let html = `<div class="bestof"><h3>Winning Predictions & Decision Board</h3><p>Top model picks and wagering decisions across the card.</p>`;
-    Object.keys(computedRaces).sort((a,b)=>Number(a)-Number(b)).forEach(raceNum => {
-        const data = computedRaces[raceNum], top = data.field[0]; if(!top) return;
-        const isStrong = (top.modelScore - (data.field[1]?.modelScore || 0)) > 8;
-        const bannerClass = isStrong ? "read-green" : "read-yellow";
-        const bannerText = isStrong ? "STRONG MODEL SELECTION" : "COMPETITIVE RACE - EXERCISE CAUTION";
-        
-        html += `
-        <div class="best-pick ${bannerClass}">
-            <div class="readability-banner ${bannerClass}">${bannerText}</div>
-            <div class="best-header">
-                <div>
-                    <div class="best-race">RACE ${raceNum} •${data.paceForecast} Pace Setup</div>
-                    <div class="best-horse"><span class="badge" style="font-size:14px;padding:4px 8px;">#${top.post}</span>${top.horse}</div>
-                </div>
-                <div class="model-prob">
-                    <button class="prob-button" onclick="showProbDetails('${raceNum}')">${top.primePower ? top.primePower+' PP' : top.modelScore.toFixed(1)+' SCORE'}</button>
-                    <div class="confidence ${isStrong?'conf-strong':'conf-lean'}">${isStrong?'★★★★★ STRONG':'★★★☆☆ LEAN'}</div>
-                </div>
+  let html = `<div class="bestof"><h3>Winning Predictions & Top Picks</h3>`;
+  const raceKeys = Object.keys(computedRaces);
+
+  if (!raceKeys.length) {
+    html += `<p>No active races available.</p>`;
+  } else {
+    raceKeys.forEach(raceNum => {
+      const data = computedRaces[raceNum];
+      const top = data.field[0];
+      if (!top) return;
+
+      html += `
+        <div class="best-pick">
+          <div class="best-header">
+            <div>
+              <div class="best-race">RACE ${raceNum}</div>
+              <div class="best-horse">#${top.post}${safe(top.horse)} <span class="badge">${top.category}</span></div>
             </div>
-            <div class="metric-line">Jockey: <b>${top.jockey}</b> • Trainer: <b>${top.trainer}</b> • ML: <b>${top.odds}</b></div>
-            <div class="reason-box"><b>Decision Logic:</b> Ranks 1st in overall model score. ${top.paceAdvantage ? 'Projects a favorable pace advantage based on Speed Points.' : ''} ${isStrong ? 'Clear standout on metrics.' : 'Marginal edge.'}</div>
-            ${data.field[1] ? `<div class="decision-also"><b>Overlay Threat:</b> #${data.field[1].post} ${data.field[1].horse} (ML: ${data.field[1].odds})</div>` : ''}
-        </div>`;
+            <div class="model-prob">${top.primePower} PP</div>
+          </div>
+          <div class="metric-line">
+            Trainer: <b>${safe(top.trainer)}</b> | Jockey: <b>${safe(top.jockey)}</b> \vert{} M/L: <b>${safe(top.odds)}</b>
+          </div>
+        </div>
+      `;
     });
-    $("bestSection").innerHTML = html + "</div>";
-    $("bestSection").style.display = "block";
+  }
+  html += `</div>`;
+  $("bestSection").innerHTML = html;
 }
 
 function renderRaceCardView() {
-    let jumpHtml = `<span class="race-jump-label">JUMP TO:</span>`, racesHtml = ``;
-    Object.keys(computedRaces).sort((a,b)=>Number(a)-Number(b)).forEach(raceNum => {
-        const data = computedRaces[raceNum];
-        jumpHtml += `<button class="race-jump-btn" onclick="document.getElementById('card-race-${raceNum}').scrollIntoView({behavior:'smooth'})">R${raceNum}</button>`;
-        racesHtml += `<div class="race-card race-anchor-target" id="card-race-${raceNum}"><h3>Race ${raceNum} Full Field</h3><div class="table-wrap"><table class="compact-table"><thead><tr><th>Post</th><th>Horse</th><th>M/L</th><th>Category</th><th>PP</th><th>Speed</th><th>Run Style</th><th>Trainer</th><th>Jockey</th></tr></thead><tbody>`;
-        data.field.forEach(r => {
-            let b = r.category==="TOP PICK" ? '<span class="badge badge-green">TOP PICK</span>' : (r.category==="CONTENDER" ? '<span class="badge badge-blue">CONTENDER</span>' : (r.category==="QUESTIONABLE" ? '<span class="badge" style="background:#b7791f;color:#fff;">QUESTIONABLE</span>' : 'PRETENDER'));
-            racesHtml += `<tr style="${r.category==='PRETENDER'?'opacity:0.6;':''}"><td>${r.post}</td><td><button class="horse-name-link" onclick="openPP(${r.id})">${r.horse}</button></td><td>${r.odds}</td><td>${b}</td><td>${r.primePower}</td><td>${r.lastSpeed}</td><td>${r.runStyle} (${r.speedPoints})</td><td>${r.trainer}</td><td>${r.jockey}</td></tr>`;
-        });
-        racesHtml += `</tbody></table></div></div>`;
+  let jumpHtml = `<span style="font-weight:800;font-size:11px;margin-right:4px;">JUMP:</span>`;
+  let racesHtml = ``;
+
+  Object.keys(computedRaces).forEach(raceNum => {
+    const data = computedRaces[raceNum];
+    jumpHtml += `<button class="race-jump-btn" onclick="document.getElementById('card-race-${raceNum}').scrollIntoView({behavior:'smooth'})">R${raceNum}</button>`;
+    
+    racesHtml += `
+      <div class="race-card" id="card-race-${raceNum}">
+        <h3>Race ${raceNum} Field</h3>
+        <div class="table-wrap">
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th>Horse</th>
+                <th>M/L</th>
+                <th>Status</th>
+                <th>Prime Power</th>
+                <th>Speed</th>
+                <th>Trainer</th>
+                <th>Jockey</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+
+    data.field.forEach(r => {
+      racesHtml += `
+        <tr>
+          <td><b>${safe(r.post)}</b></td>
+          <td><b>${safe(r.horse)}</b></td>
+          <td>${safe(r.odds)}</td>
+          <td><span class="badge">${r.category}</span></td>
+          <td>${safe(r.primePower)}</td>
+          <td>${safe(r.lastSpeed)}</td>
+          <td>${safe(r.trainer)}</td>
+          <td>${safe(r.jockey)}</td>
+        </tr>
+      `;
     });
-    $("cardSection").innerHTML = `<div class="race-jump-bar">${jumpHtml}</div>${racesHtml}`;
+
+    racesHtml += `</tbody></table></div></div>`;
+  });
+
+  $("cardSection").innerHTML = `<div class="race-jump-bar">${jumpHtml}</div>${racesHtml}`;
 }
 
 function renderContendersView() {
-    let html = ``;
-    Object.keys(computedRaces).sort((a,b)=>Number(a)-Number(b)).forEach(raceNum => {
-        const data = computedRaces[raceNum];
-        const cont = data.field.filter(r => r.category === "TOP PICK" || r.category === "CONTENDER");
-        const quest = data.field.filter(r => r.category === "QUESTIONABLE");
-        html += `<div class="analysis-card"><h3>Race ${raceNum} • Contenders & Questionables</h3><div class="analysis-grid">`;
-        cont.forEach(r => { html += `<div class="analysis-box contender"><h4><span class="badge badge-green">CONTENDER</span> #${r.post} ${r.horse}</h4><div class="analysis-item"><b>M/L:</b> ${r.odds} | <b>Style:</b> ${r.runStyle}</div><div class="analysis-item"><b>PP:</b> ${r.primePower} | <b>Spd:</b> ${r.bestSpeedLife}</div></div>`; });
-        quest.forEach(r => { html += `<div class="analysis-box questionable"><h4><span class="badge" style="background:#b7791f;color:#fff;">QUESTIONABLE</span> #${r.post} ${r.horse}</h4><div class="analysis-item"><b>M/L:</b> ${r.odds} | <b>Style:</b> ${r.runStyle}</div><div class="analysis-item"><b>PP:</b> ${r.primePower} | <b>Spd:</b> ${r.bestSpeedLife}</div><div class="analysis-item" style="color:var(--red);"><i>Needs improvement to challenge top tier.</i></div></div>`; });
-        if(!cont.length && !quest.length) html += `<p style="grid-column:1/-1;">Open race.</p>`;
-        html += `</div></div>`;
+  let html = ``;
+  Object.keys(computedRaces).forEach(raceNum => {
+    const data = computedRaces[raceNum];
+    html += `<div class="analysis-card"><h3>Race ${raceNum} Contender Analysis</h3><div class="analysis-grid">`;
+    
+    data.field.forEach(r => {
+      const isTop = r.category === "TOP PICK";
+      html += `
+        <div class="analysis-box ${isTop ? 'top' : 'contender'}">
+          <h4>#${safe(r.post)} ${safe(r.horse)}</h4>
+          <div class="analysis-item">
+            <b>Rank:</b> ${r.category}<br>
+            <b>Morning Line:</b> ${safe(r.odds)}<br>
+            <b>Prime Power:</b> ${safe(r.primePower)}<br>
+            <b>Last Speed Figure:</b> ${safe(r.lastSpeed)}
+          </div>
+        </div>
+      `;
     });
-    $("analysisSection").innerHTML = html;
+    
+    html += `</div></div>`;
+  });
+  $("analysisSection").innerHTML = html;
 }
 
 function renderRaceFactsView() {
-    let html = `<div class="bestof"><h3>Significance & Race Facts</h3><p>Pace dynamics, notable trainer angles, and key field metrics.</p></div>`;
-    Object.keys(computedRaces).sort((a,b)=>Number(a)-Number(b)).forEach(raceNum => {
-        const data = computedRaces[raceNum];
-        const eHorses = data.field.filter(r=>r.runStyle.includes("E")).map(r=>`#${r.post} ${r.horse}`).join(", ");
-        html += `
-        <div class="analysis-card" style="margin-top:15px;">
-            <h3>Race ${raceNum} Facts</h3>
-            <div class="analysis-grid">
-                <div class="analysis-box"><h4>Pace Significance</h4><div class="analysis-item"><b>Total Speed Points:</b> ${data.totalSpeedPts}</div><div class="analysis-item"><b>Pace Setup:</b> ${data.paceForecast}</div><div class="analysis-item"><b>Early Speed (E):</b> ${eHorses || 'None'}</div></div>
-                <div class="analysis-box"><h4>Class & Earnings</h4><div class="analysis-item"><b>Top Earner:</b> ${[...data.field].sort((a,b)=>b.careerEarnings-a.careerEarnings)[0]?.horse || 'N/A'}</div><div class="analysis-item"><b>Highest PP:</b> ${[...data.field].sort((a,b)=>b.primePower-a.primePower)[0]?.horse || 'N/A'}</div></div>
-                <div class="analysis-box"><h4>Trainer/Jockey</h4>${data.field.filter(r=>r.tjROI > 1.0).map(r=>`<div class="analysis-item"><b>#${r.post} ${r.horse}</b>: T/J ROI$${r.tjROI.toFixed(2)}</div>`).join("") || '<div class="analysis-item">No significant T/J ROI angles > $1.00</div>'}</div>
-            </div>
-            <details class="rf806"><summary>View Complete Field Stats (Pedigree & Performance)</summary>
-                <div class="rf806-wrap"><table class="rf806-table">
-                    <thead><tr><th>Horse</th><th>Starts</th><th>Wins</th><th>Win%</th><th>Career $</th><th>Sire</th><th>Dam Sire</th></tr></thead>
-                    <tbody>${data.field.map(r=>`<tr><td>#${r.post}${r.horse}</td><td>${r.starts}</td><td>${r.wins}</td><td>${r.starts?((r.wins/r.starts)*100).toFixed(0):0}\%</td><td>$${Number(r.careerEarnings).toLocaleString()}</td><td>${r.sire\vert{}\vert{}'-'}</td><td>${r.damSire||'-'}</td></tr>`).join('')}</tbody>
-                </table></div>
-            </details>
-        </div>`;
-    });
-    $("factsSection").innerHTML = html;
+  let count = 0;
+  Object.values(computedRaces).forEach(d => count += d.field.length);
+  $("factsSection").innerHTML = `
+    <div class="analysis-card">
+      <h3>Race Facts & Dataset Summary</h3>
+      <div class="analysis-item" style="font-size:14px;line-height:1.6;">
+        • <b>Total Active Races:</b> ${Object.keys(computedRaces).length}<br>
+        • <b>Total Active Starters:</b> ${count}<br>
+        • <b>Engine Status:</b> Calculations completed dynamically.<br>
+      </div>
+    </div>
+  `;
 }
 
-/* MODALS */
-window.openPP = function(id) {
-    const r = rows.find(x => x.id === id); if(!r) return;
-    $("ppContent").innerHTML = `
-    <h2 style="margin-top:0;font-size:22px;">#${r.post} ${r.horse} <span style="font-size:14px;color:var(--ink-soft);font-weight:normal;margin-left:10px;">${r.jockey} | ${r.trainer}</span></h2>
-    <div class="analysis-grid" style="margin-bottom:15px;">
-        <div class="analysis-box"><h4>Lifetime Record</h4><div class="analysis-item">${r.starts} Starts • ${r.wins} Wins</div><div class="analysis-item"><b>Earnings:</b> $${Number(r.careerEarnings).toLocaleString()}</div></div>
-        <div class="analysis-box"><h4>Profile</h4><div class="analysis-item"><b>Sire:</b> ${r.sire || 'N/A'}</div><div class="analysis-item"><b>Run Style:</b> ${r.runStyle} (${r.speedPoints} pts)</div></div>
-    </div>
-    <h3 style="margin:20px 0 10px;font-size:14px;">Past Performances</h3>
-    <div class="table-wrap"><table class="pp-table"><thead><tr><th>Date</th><th>Track</th><th>Dist</th><th>Surf</th><th>Cond</th><th>Post</th><th>Fin</th><th>Speed</th><th>Pace (E1-E2-L)</th></tr></thead>
-    <tbody>${r.ppRaces.length ? r.ppRaces.map(p=>`<tr><td>${formatDate(p.date)}</td><td>${p.track}</td><td>${formatDistance(p.dist)}</td><td>${p.surf}</td><td>${p.trackCondition}</td><td>${p.post}</td><td>${p.fin}</td><td><b>${p.speed\vert{}\vert{}'-'}</b></td><td>${p.pace2||'-'}/${p.pace4\vert{}\vert{}'-'}/${p.latePace||'-'}</td></tr>`).join('') : '<tr><td colspan="9">No PPs Available</td></tr>'}</tbody></table></div>
-    <h3 style="margin:20px 0 10px;font-size:14px;">Recent Workouts</h3>
-    <div class="work-grid">${r.ppWorks.length ? r.ppWorks.map(w=>`<div class="work-item"><div><b>${w.date}</b> • ${w.track}</div><div>${formatDistance(w.distance)} in ${w.time} (${w.condition})</div></div>`).join('') : '<div class="work-item">No recent works.</div>'}</div>
-    `;
-    $("ppOverlay").classList.add("show");
-};
-$("ppCloseBtn").addEventListener("click", () => $("ppOverlay").classList.remove("show"));
+$("drfInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const lines = evt.target.result.split("\n").filter(l => l.trim().length > 0);
+    if (lines.length) {
+      rows = [];
+      lines.forEach((line, i) => {
+        const parts = line.split(",").map(p => p.replace(/"/g, "").trim());
+        if (parts.length >= 3) {
+          rows.push(newRow({
+            race: parts[0] || "1",
+            post: parts[1] || String(i + 1),
+            horse: parts[2] || `Horse ${i + 1}`,
+            trainer: parts[3] || "Unknown",
+            jockey: parts[4] || "Unknown",
+            odds: parts[5] || "5-1",
+            primePower: number(parts[6]) || 130.0,
+            lastSpeed: number(parts[7]) || 85
+          }));
+        }
+      });
+      renderRows();
+      computeRaceCard();
+      $("drfStatus").className = "status ok";
+      $("drfStatus").textContent = `✓ Parsed ${rows.length} entries from ${file.name}`;
+    }
+  };
+  reader.readAsText(file);
+});
 
-window.showProbDetails = function(raceNum) {
-    const data = computedRaces[raceNum]; if(!data) return;
-    let totalScore = Math.max(1, data.field.reduce((s, r) => s + (r.modelScore>0?r.modelScore:0), 0));
-    let html = `<h2 style="margin-top:0;">Model Probabilities - Race ${raceNum}</h2><p>Base model scoring translated to relative field share.</p><div class="table-wrap"><table class="compact-table"><thead><tr><th>Horse</th><th>Model Score</th><th>Field Share</th></tr></thead><tbody>`;
-    data.field.forEach(r => { html += `<tr><td><b>#${r.post} ${r.horse}</b></td><td>${r.modelScore.toFixed(1)}</td><td>${(((r.modelScore>0?r.modelScore:0)/totalScore)*100).toFixed(1)}%</td></tr>`; });
-    $("probContent").innerHTML = html + `</tbody></table></div>`;
-    $("probOverlay").classList.add("show");
-};
-$("probCloseBtn").addEventListener("click", () => $("probOverlay").classList.remove("show"));
+$("addRowBtn").addEventListener("click", () => { rows.push(newRow()); renderRows(); });
+$("clearBtn").addEventListener("click", () => {
+  rows = [];
+  computedRaces = {};
+  renderRows();
+  ["best", "card", "analysis", "facts"].forEach(id => $(id + "Section").innerHTML = "");
+  $("drfStatus").textContent = "";
+});
+$("loadDemoBtn").addEventListener("click", loadDemoData);
+$("computeBtn").addEventListener("click", () => { computeRaceCard(); switchTab("best"); });
+$("tabbar").addEventListener("click", e => {
+  if (e.target.tagName === "BUTTON") switchTab(e.target.dataset.tab);
+});
 
+window.addEventListener("DOMContentLoaded", () => { loadDemoData(); });
 </script>
 </body>
 </html>
